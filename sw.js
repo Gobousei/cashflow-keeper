@@ -1,76 +1,30 @@
-const CACHE_VERSION = '1sa8rat';//YYYYMMDDHOURを３２進数表記
-const CACHE_NAME = `${registration.scope}!${CACHE_VERSION}`;
-
-// キャッシュするファイルをセットする
+// Cache name
+const CACHE_NAME = 'caashflow-keeper-pwa-v1';
+// Cache targets
 const urlsToCache = [
-  '.',
-  'outside.html',
-  'inside.html',
-  'payments.html',
-  'index.html'
+  './',
+  './index.html',
+  './outside.html',
+  './inside.html',
+  'payments.html'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    // キャッシュを開く
-    caches.open(CACHE_NAME)
-    .then((cache) => {
-      // 指定されたファイルをキャッシュに追加する
-      return cache.addAll(urlsToCache);
-    })
-  );
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return cacheNames.filter((cacheName) => {
-        // このスコープに所属していて且つCACHE_NAMEではないキャッシュを探す
-        return cacheName.startsWith(`${registration.scope}!`) &&
-               cacheName !== CACHE_NAME;
-      });
-    }).then((cachesToDelete) => {
-      return Promise.all(cachesToDelete.map((cacheName) => {
-        // いらないキャッシュを削除する
-        return caches.delete(cacheName);
-      }));
-    })
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => {
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request)
-    .then((response) => {
-      // キャッシュ内に該当レスポンスがあれば、それを返す
-      if (response) {
-        return response;
-      }
-
-      // 重要：リクエストを clone する。リクエストは Stream なので
-      // 一度しか処理できない。ここではキャッシュ用、fetch 用と2回
-      // 必要なので、リクエストは clone しないといけない
-      let fetchRequest = event.request.clone();
-
-      return fetch(fetchRequest)
-        .then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            // キャッシュする必要のないタイプのレスポンスならそのまま返す
-            return response;
-          }
-
-          // 重要：レスポンスを clone する。レスポンスは Stream で
-          // ブラウザ用とキャッシュ用の2回必要。なので clone して
-          // 2つの Stream があるようにする
-          let responseToCache = response.clone();
-
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-
-          return response;
-        });
-    })
+    caches
+      .match(event.request)
+      .then((response) => {
+        return response ? response : fetch(event.request);
+      })
   );
 });
