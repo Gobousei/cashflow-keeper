@@ -12,6 +12,16 @@
     <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
     <script src="./config.js"></script>
     <script>const inout = 1;</script>
+    <script>
+      
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').then(registration => {
+          console.log('ServiceWorker registration successful.');
+        }).catch(err => {
+          console.log('ServiceWorker registration failed.');
+        });
+      }
+        </script>
 </head>
 <body>
     <section class="hero is-dark">
