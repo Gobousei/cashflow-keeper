@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <style>
+        .input{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+ 
+            apiKey: "AIzaSyDF9xs3wltlnqi7UAyb9YCvhxlam1GNflA",
+            authDomain: "cashflow-keeper.firebaseapp.com",
+            databaseURL: "https://cashflow-keeper-default-rtdb.firebaseio.com",
+            projectId: "cashflow-keeper",
+            storageBucket: "cashflow-keeper.appspot.com",
+            messagingSenderId: "860972338101",
+            appId: "1:860972338101:web:a377c4932c0d4f133b67fc",
+            measurementId: "G-4V12T4YJ9G"
+        };
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+    </script>
+<section class="hero is-dark">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          CashFlow Keeper -ログイン画面-
+        </h1>
+        <h2 class="subtitle is-6" id="balance">
+        </h2>
+      </div>
+    </div>
+  </section>
+<div class="container control">
+    <div class="field" style="width: 70%; margin-left: 15%; margin-top: 50px;">
+    <input id="txtmail" type="email" class="input is-info is-medium" placeholder="メールアドレス"><br>
+    <input id="txtpass" type="password" class="input is-info is-medium" placeholder="パスワード"><br>
+    <input id="txtpass2" type="password" class="input is-info is-medium" placeholder="パスワード確認"><br>
+    <button id="crebtn" class="button">アカウント作成</button>
+    <button id="inbtn" class="button">ログイン</button>
+    <button id="outbtn" class="button">ログアウト</button>
+    <br>
+</div>
+</div>
+
+    <div id="sta"></div>
+    <script>
+        const mail = document.getElementById("txtmail");
+        const pass = document.getElementById("txtpass");
+        const pass2 = document.getElementById("txtpass2");
+        const cre = document.getElementById("crebtn");
+        const login = document.getElementById("inbtn");
+        const logout = document.getElementById("outbtn");
+        const sta = document.getElementById("sta");
+        let mailv;
+        let passv;
+        let pass2v;
+        let errorCode;
+        let errorMessage;
+
+
+        firebase.auth().onAuthStateChanged(function (user) { //ログイン状態確認
+            if (user) {
+                //ログイン時の処理
+                console.log("ログイン中");
+                location.href="./outside.html";
+            } else {
+                //非ログイン時の処理
+                console.log("ログインなし");
+            }
+        });
+
+        cre.addEventListener("click", function () { //メールアドレスとパスワードの登録
+            mailv = mail.value;
+            passv = pass.value;
+            pass2v = pass2.value;
+            if (passv === pass2v) { //パスの確認
+                firebase.auth().createUserWithEmailAndPassword(mailv, passv).catch(function (error) {
+                    //エラーが出た時
+                    errorCode = error.code;
+                    errorMessage = error.message;
+                });
+            } else {
+                alert("確認パスが違います");
+            }
+        });
+
+        login.addEventListener("click", function () { //ログイン
+            mailv = mail.value;
+            passv = pass.value;
+            firebase.auth().signInWithEmailAndPassword(mailv, passv).catch(function (error) {
+                //エラーが出た時
+                errorCode = error.code;
+                errorMessage = error.message;
+                alert('メールアドレス、またはパスワードが違います')
+            });
+        });
+
+        logout.addEventListener("click", function () { //ログアウト
+            firebase.auth().signOut().then(function () {
+                //ログアウトできた時
+            }).catch(function (error) {
+                //ログアウトできなかった時
+            });
+        });
+    </script>
+</body>
+
+</html>

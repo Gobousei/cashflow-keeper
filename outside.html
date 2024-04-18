@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>CashFlow Keeper</title>
+    <link rel=”icon” href=“./icon/192.jpg”>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script src="./config.js"></script>
+    <script>const inout = 2;</script>
+</head>
+<body>
+    <section class="hero is-dark">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+              CashFlow Keeper
+            </h1>
+            <h2 class="subtitle is-6" id="balance">
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="tabs is-boxed is-mobile is-centered">
+            <ul>
+              <li class="is-active">
+                <a>
+                  <span>支出</span>
+                </a>
+              </li>
+              <li>
+                <a href="./inside.html">
+                  <span>収入</span>
+                </a>
+              </li>
+              <li>
+                <a href="./payments.html">
+                  <span>収支</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        <div class="container control">
+            <div class="field">
+                <label class="label">支出の種類</label>
+                <div class="control">
+                    <div class="select is-info is-medium">
+                      <select name="types" id="type">
+                      </select>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="field">
+                <label class="label">詳細</label>
+                <div class="control">
+                  <input class="input is-info is-medium" type="text" placeholder="Text input" id="detail">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">金額</label>
+                <div class="control">
+                  <input class="input is-info is-medium" type="number" id="price">
+                </div>
+              </div>
+
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-medium is-link" onclick="show()">Submit</button>
+                </div>
+                <div class="control">
+                  <button class="button is-link is-light is-medium" onclick="formclear()">Cancel</button>
+                </div>
+              </div>
+              </div>
+              <div class="modal is-active" id="modal">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                  <header class="modal-card-head">
+                    <p class="modal-card-title">確認</p>
+                    <button class="delete" aria-label="close" onclick="hide()"></button>
+                  </header>
+                  <section class="modal-card-body">
+                    <div class="content">
+                      <h2>支出</h2>
+                      <h3>支出の種類</h3>
+                      <p id="typeconfirm"></p>
+                      <h3>詳細</h3>
+                      <p id="detailconfirm"></p>
+                      <h3>金額</h3>
+                      <p id="priceconfirm"></p>
+                    </div>
+                  </section>
+                  <footer class="modal-card-foot">
+                    <button class="button is-success" id="submit_button"  onclick="formsubmit()">OK</button>
+                    <button class="button" onclick="hide()">キャンセル</button>
+                  </footer>
+                </div>
+              </div>            
+      </section>
+      <script src="./main.js"></script>
+      <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+            <strong>CashFlow Keeper</strong> ©2024 Gobousei All Rights Reserved. <a href="'https://docs.google.com/forms/d/e/1FAIpQLSckggiG3gDYYh_VzQuV1cx7c40ucRqN5G7AVvjKIev113_KBw/viewform">お問い合わせ</a>
+          </p>
+        </div>
+      </footer>
+</body>
+</html>
