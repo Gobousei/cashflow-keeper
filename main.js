@@ -5,7 +5,6 @@
           "outside": ["error","その他","食費","日用品費","被服費","美容費","医療費","交際費","娯楽費"]
       };
       var modal = document.getElementById('modal');
-      modal.style.display = 'none';
 
 
           firebase.initializeApp(firebaseConfig);
@@ -201,6 +200,8 @@
   
   }
   function formclear(){
-    window.location.reload();
+    document.getElementById('detail').value = '';
+    document.getElementById('price').value = '';
+    hide();
   }
 
